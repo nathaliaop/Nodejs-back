@@ -1,24 +1,23 @@
-const express = require('express')
-const app = express()
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
 
-const config = require('dotenv').config()
+const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true}));
+app.use(cors());
+
+const config = require('dotenv').config();
 const mongo = process.env.MONGO;
 
-const cors = require('cors')
-app.use(cors())
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useUnifiedTopology', true);
+mongoose.set('useCreateIndex', true);
+mongoose.connect(mongo).catch(error => console.log(error));
 
-const mongoose = require('mongoose');
-mongoose.connect(mongo, {useNewUrlParser: true}).
-catch(error => console.log(error));
-mongoose.Promise = global.Promise;
-
-const rotas = require('./rotas')
-app.use('/',rotas)
-
-app.use(express.static(__dirname + '/nodeblog-front'))
+const rotas = require('./rotas');
+app.use('/',rotas);
 
 const port = 4000
 app.listen(port, () => {
