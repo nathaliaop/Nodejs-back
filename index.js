@@ -16,7 +16,7 @@ mongoose.set('useUnifiedTopology', true);
 mongoose.set('useCreateIndex', true);
 mongoose.connect(mongo).catch(error => console.log(error));
 
-const rotas = require('./rotas');
+const rotas = require('./src/controllers');
 app.use('/',rotas);
 
 const port = 4000
